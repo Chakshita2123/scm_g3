@@ -1,0 +1,21 @@
+name: Count Pull Requests 🧮
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  count-pull-requests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔍 Count open pull requests
+        run: |
+          echo "Fetching open PRs..."
+          PR_COUNT=$(gh pr list --state open --json number --jq 'length')
+          echo "🔢 There are currently $PR_COUNT open pull request(s)."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
